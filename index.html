@@ -152,6 +152,70 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-partition-table" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/partition-table/">Oracle分区表</a>
+    </h1>
+  
+
+        
+        <a href="/2019/partition-table/" class="archive-article-date">
+  	<time datetime="2019-09-23T06:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>sqlplus&gt;</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">-- 1. 查询表是否可以进行在线重定义</span></span><br><span class="line"></span><br><span class="line">exec DBMS_REDEFINITION.CAN_REDEF_TABLE('gdmsaecnew','DETECTIONOFSHIPLIST',DBMS_REDEFINITION.cons_use_pk);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 创建一个表与其结构相同的表</span></span><br><span class="line"><span class="comment">-- 已用客户端进行创建</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3. 进行同步(客户端执行此命令时会卡住，一直不动，但在sqlplus下执行一下就成功)</span></span><br><span class="line">exec  DBMS_REDEFINITION.START_REDEF_TABLE('gdmsaecnew','DETECTIONOFSHIPLIST','DETECTIONOFSHIPLIST_TEMP_PART',NULL, DBMS_REDEFINITION.cons_use_pk);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 4. 同步对象，如索引，外键等(一定要做，不然会丢失关系)</span></span><br><span class="line"><span class="comment">-- 建一个sql文件，在sqlplus执行这个sql文件 @/path/xx.sql</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">num_errors PLS_INTEGER;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(<span class="string">'gdmsaecnew'</span>, <span class="string">'DETECTIONOFSHIPLIST'</span>,<span class="string">'DETECTIONOFSHIPLIST_TEMP_PART'</span>,</span><br><span class="line">   DBMS_REDEFINITION.CONS_ORIG_PARAMS, <span class="literal">TRUE</span>, <span class="literal">TRUE</span>, <span class="literal">TRUE</span>, <span class="literal">TRUE</span>, num_errors);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询上步出错信息，选择性理会</span></span><br><span class="line"><span class="keyword">select</span> object_name, base_table_name, ddl_txt <span class="keyword">from</span> DBA_REDEFINITION_ERRORS;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 6 结束重定义</span></span><br><span class="line">exec DBMS_REDEFINITION.FINISH_REDEF_TABLE('gdmsaecnew', 'DETECTIONOFSHIPLIST','DETECTIONOFSHIPLIST_TEMP_PART');</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 7 如果中间出错不知怎么处理，可以先中止</span></span><br><span class="line">exec DBMS_REDEFINITION.abort_redef_table('gdmsaecnew', 'DETECTIONOFSHIPLIST','DETECTIONOFSHIPLIST_TEMP_PART');</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/partition-table/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-archivelog-database" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
