@@ -11,7 +11,7 @@
 
     <title>
         
-          flashback-database - Ht
+          数据导入导出 - Ht
         
     </title>
 
@@ -64,13 +64,13 @@
 <ul>
 <li>[Oracle]
 <ul>
-<li><a href="/2019/user">用户管理</a></li>
-<li><a href="/2019/update-oracle-character">更改字符集</a></li>
-<li><a href="/2019/exp-imp-database">数据导入导出</a></li>
-<li><a href="/2019/archivelog-database">数据库归档日志</a></li>
-<li><a href="/2019/flashback-database">数据库闪回</a></li>
-<li><a href="/2019/partition-table">表分区</a></li>
-<li><a href="/2019/tablespace">表空间</a></li>
+<li><a href="/2019/oracle/user">用户管理</a></li>
+<li><a href="/2019/oracle/update-oracle-character">更改字符集</a></li>
+<li><a href="/2019/oracle/exp-imp-database">数据导入导出</a></li>
+<li><a href="/2019/oracle/archivelog-database">数据库归档日志</a></li>
+<li><a href="/2019/oracle/flashback-database">数据库闪回</a></li>
+<li><a href="/2019/oracle/partition-table">表分区</a></li>
+<li><a href="/2019/oracle/tablespace">表空间</a></li>
 </ul>
 </li>
 </ul>
@@ -109,13 +109,13 @@
 <ul>
 <li>[Oracle]
 <ul>
-<li><a href="/2019/user">用户管理</a></li>
-<li><a href="/2019/update-oracle-character">更改字符集</a></li>
-<li><a href="/2019/exp-imp-database">数据导入导出</a></li>
-<li><a href="/2019/archivelog-database">数据库归档日志</a></li>
-<li><a href="/2019/flashback-database">数据库闪回</a></li>
-<li><a href="/2019/partition-table">表分区</a></li>
-<li><a href="/2019/tablespace">表空间</a></li>
+<li><a href="/2019/oracle/user">用户管理</a></li>
+<li><a href="/2019/oracle/update-oracle-character">更改字符集</a></li>
+<li><a href="/2019/oracle/exp-imp-database">数据导入导出</a></li>
+<li><a href="/2019/oracle/archivelog-database">数据库归档日志</a></li>
+<li><a href="/2019/oracle/flashback-database">数据库闪回</a></li>
+<li><a href="/2019/oracle/partition-table">表分区</a></li>
+<li><a href="/2019/oracle/tablespace">表空间</a></li>
 </ul>
 </li>
 </ul>
@@ -127,7 +127,13 @@
 </div>
 
 <div class="book-post">
-  <p>TODO</p>
+  <p>以dmp为文件作为导入导出</p>
+<h4 id="导出">导出</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">exp user/passwd@ip:port/sid   file=back.dmp   owner=user</span><br></pre></td></tr></table></figure>
+<p>如果表中从来没有insert过数据，这样的表是不分配空间的，导出时无法导出，可以执行以下查询获得分配语句，然后执行分配语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="string">'alter table '</span>||table_name||<span class="string">' allocate extent;'</span> <span class="keyword">from</span> user_tables <span class="keyword">where</span> num_rows=<span class="number">0</span> <span class="keyword">or</span> num_rows <span class="keyword">is</span> <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<h4 id="导入">导入</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">imp user/passwd@ip:port/sid  file=back.dmp  full=y ignore=y</span><br></pre></td></tr></table></figure>
 
 </div>
 
